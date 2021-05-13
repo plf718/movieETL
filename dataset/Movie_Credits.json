@@ -1,0 +1,34 @@
+{
+	"name": "Movie_Credits",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Movie OLTP",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Sources/Movie OLTP"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "cast",
+				"type": "nvarchar"
+			},
+			{
+				"name": "crew",
+				"type": "nvarchar"
+			},
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "credits"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

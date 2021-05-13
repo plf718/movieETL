@@ -1,0 +1,32 @@
+{
+	"name": "Language",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BLOB_anqi",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Sources/BLOB"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "movielanguage"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "languageId",
+				"type": "INT64"
+			},
+			{
+				"name": "original_language",
+				"type": "UTF8"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

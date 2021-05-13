@@ -1,0 +1,37 @@
+{
+	"name": "Day1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "Day1 Dataflow",
+						"type": "DataFlowReference",
+						"parameters": {
+							"CutoffDateTime": "'2016-01-01'"
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2021-05-12T18:08:40Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

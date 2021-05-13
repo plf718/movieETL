@@ -1,0 +1,30 @@
+{
+	"name": "Integration_ETLCutoff",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Sources/DW"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Table Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cutoff Time",
+				"type": "datetime2",
+				"scale": 7
+			}
+		],
+		"typeProperties": {
+			"schema": "Integration",
+			"table": "ETL Cutoff"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

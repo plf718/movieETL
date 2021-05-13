@@ -1,0 +1,55 @@
+{
+	"name": "Movie Table ETL",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Movie_Metadata",
+						"type": "DatasetReference"
+					},
+					"name": "Metadata"
+				},
+				{
+					"dataset": {
+						"referenceName": "Movie_Credits",
+						"type": "DatasetReference"
+					},
+					"name": "Credits"
+				},
+				{
+					"dataset": {
+						"referenceName": "Language",
+						"type": "DatasetReference"
+					},
+					"name": "Language"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "BLOB_anqi",
+						"type": "LinkedServiceReference"
+					},
+					"name": "TempBLOB"
+				}
+			],
+			"transformations": [
+				{
+					"name": "ConvertStringToArray"
+				},
+				{
+					"name": "ExtractIdFromArray"
+				},
+				{
+					"name": "JoinCredits"
+				},
+				{
+					"name": "JoinLanguage"
+				}
+			],
+			"script": "source(output(\n\t\tadult as string,\n\t\tbelongs_to_collection as string,\n\t\tbudget as decimal(18,2),\n\t\tgenres as string,\n\t\thomepage as string,\n\t\tid as integer,\n\t\timdb_id as string,\n\t\toriginal_language as string,\n\t\toriginal_title as string,\n\t\toverview as string,\n\t\tpopularity as double,\n\t\tposter_path as string,\n\t\tproduction_companies as string,\n\t\tproduction_countries as string,\n\t\trelease_date as date,\n\t\trevenue as decimal(18,2),\n\t\truntime as double,\n\t\tspoken_languages as string,\n\t\tstatus as string,\n\t\ttagline as string,\n\t\ttitle as string,\n\t\tvideo as string,\n\t\tvote_average as decimal(10,2),\n\t\tvote_count as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> Metadata\nsource(output(\n\t\tcast as string,\n\t\tcrew as string,\n\t\tid as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> Credits\nsource(output(\n\t\tlanguageId as long,\n\t\toriginal_language as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'parquet') ~> Language\nJoinLanguage derive(genres = split(genres, '}, {'),\n\t\tcast = split(cast, '}, {')) ~> ConvertStringToArray\nConvertStringToArray derive(genres = map(genres, regexExtract(#item, \"'id': ([0-9]+),\")),\n\t\tcredits = map(cast, regexExtract(#item, \"'name': '(.*?)',\"))) ~> ExtractIdFromArray\nMetadata, Credits join(Metadata@id == Credits@id,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> JoinCredits\nJoinCredits, Language join(Metadata@original_language == Language@original_language,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> JoinLanguage\nExtractIdFromArray sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'delta',\n\tcontainer: 'metadata',\n\tmergeSchema: false,\n\tautoCompact: false,\n\toptimizedWrite: false,\n\tvacuum: 0,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tid = Metadata@id,\n\t\ttitle,\n\t\tlanguageId,\n\t\tgenres,\n\t\tcredits,\n\t\truntime,\n\t\tbudget,\n\t\trevenue\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tsaveOrder: 1) ~> TempBLOB"
+		}
+	}
+}

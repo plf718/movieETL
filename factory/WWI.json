@@ -1,0 +1,9 @@
+{
+	"name": "WWI",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "f83d9c68-c720-4dc6-a237-aad6f74d5564",
+		"tenantId": "5e6f9798-a502-48b3-8e00-8058ca089a7c"
+	}
+}
