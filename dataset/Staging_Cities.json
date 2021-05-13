@@ -1,0 +1,64 @@
+{
+	"name": "Staging_Cities",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ODS_Staging",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Target"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CityID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CityName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "StateProvinceID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Location",
+				"type": "varbinary"
+			},
+			{
+				"name": "LatestRecordedPopulation",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "LastEditedBy",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ValidFrom",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "ValidTo",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "IngestedDateTime",
+				"type": "datetime2",
+				"scale": 7
+			}
+		],
+		"typeProperties": {
+			"schema": "Application",
+			"table": "Staging_Cities"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

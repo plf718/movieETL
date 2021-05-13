@@ -1,0 +1,83 @@
+{
+	"name": "Countries",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "WWI_OLTP",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Source"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CountryID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CountryName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FormalName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "IsoAlpha3Code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "IsoNumericCode",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CountryType",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LatestRecordedPopulation",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "Continent",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Region",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Subregion",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Border",
+				"type": "WideWorldImporters-Standard.sys.geography"
+			},
+			{
+				"name": "LastEditedBy",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ValidFrom",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "ValidTo",
+				"type": "datetime2",
+				"scale": 7
+			}
+		],
+		"typeProperties": {
+			"schema": "Application",
+			"table": "Countries"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

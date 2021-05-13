@@ -1,0 +1,38 @@
+{
+	"name": "load_movie_genre",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Genre",
+						"type": "DatasetReference"
+					},
+					"name": "source"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "Temp BLOB",
+						"type": "LinkedServiceReference"
+					},
+					"name": "sink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "convert2array"
+				},
+				{
+					"name": "FlattenJSON"
+				},
+				{
+					"name": "getGenresInfo"
+				}
+			],
+			"script": "source(output(\n\t\tgenres as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tlimit: 100,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'select distinct genres from dbo.movies_metadata',\n\tformat: 'query') ~> source\nsource derive(genres = split(replace(replace(genres, '[{', ''),'}]',''),'}, {')) ~> convert2array\nconvert2array foldDown(unroll(genres, genres),\n\tmapColumn(\n\t\tflatten_genre = genres\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> FlattenJSON\nFlattenJSON derive(genre_id = toInteger(replace(substring(split(flatten_genre,', ')[1],6),' ','')),\n\t\tgenre_name = replace(substring(split(flatten_genre,', ')[2],8),\"'\",'')) ~> getGenresInfo\ngetGenresInfo sink(allowSchemaDrift: false,\n\tvalidateSchema: true,\n\tinput(\n\t\tflatten_genre as string,\n\t\tgenre_id as integer,\n\t\tgenre_name as string\n\t),\n\tformat: 'delta',\n\tcontainer: 'temp',\n\toverwrite:true,\n\tmergeSchema: false,\n\tautoCompact: false,\n\toptimizedWrite: false,\n\tvacuum: 0,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tgenre_id,\n\t\tgenre_name\n\t),\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tsaveOrder: 1) ~> sink"
+		}
+	}
+}

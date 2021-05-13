@@ -1,0 +1,36 @@
+{
+	"name": "BLOB_Genre",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Temp BLOB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "movie-source"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "temp"
+			},
+			"compressionCodec": "none"
+		},
+		"schema": [
+			{
+				"name": "flatten_genre",
+				"type": "UTF8"
+			},
+			{
+				"name": "genre_id",
+				"type": "INT32"
+			},
+			{
+				"name": "genre_name",
+				"type": "UTF8"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

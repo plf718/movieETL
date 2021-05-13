@@ -1,0 +1,389 @@
+{
+	"name": "StockItem",
+	"properties": {
+		"activities": [
+			{
+				"name": "LoadSchema",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"isolationLevel": "ReadUncommitted",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Stock Item Staging Key",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Stock Item Staging Key",
+									"type": "Int32",
+									"physicalType": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "WWI Stock Item ID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "WWI Stock Item ID",
+									"type": "Int32",
+									"physicalType": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "Stock Item",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "Stock Item",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Color",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "Color",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Selling Package",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "Selling Package",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Buying Package",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "Buying Package",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Brand",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "Brand",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Size",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "Size",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Lead Time Days",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Lead Time Days",
+									"type": "Int32",
+									"physicalType": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "Quantity Per Outer",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Quantity Per Outer",
+									"type": "Int32",
+									"physicalType": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "Is Chiller Stock",
+									"type": "Boolean",
+									"physicalType": "bit"
+								},
+								"sink": {
+									"name": "Is Chiller Stock",
+									"type": "Boolean",
+									"physicalType": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "Barcode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "Barcode",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Tax Rate",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 3,
+									"precision": 18
+								},
+								"sink": {
+									"name": "Tax Rate",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Unit Price",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								},
+								"sink": {
+									"name": "Unit Price",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Recommended Retail Price",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								},
+								"sink": {
+									"name": "Recommended Retail Price",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Typical Weight Per Unit",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 3,
+									"precision": 18
+								},
+								"sink": {
+									"name": "Typical Weight Per Unit",
+									"type": "Decimal",
+									"physicalType": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Photo",
+									"type": "Byte[]",
+									"physicalType": "varbinary"
+								},
+								"sink": {
+									"name": "Photo",
+									"type": "Byte[]",
+									"physicalType": "Byte[]"
+								}
+							},
+							{
+								"source": {
+									"name": "Valid From",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								},
+								"sink": {
+									"name": "Valid From",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "Valid To",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								},
+								"sink": {
+									"name": "Valid To",
+									"type": "DateTime",
+									"physicalType": "DateTime"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DWStockItem_Staging",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Staging_StockItem",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "CutoffVariable",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select cast(convert(nvarchar, dateadd(year, -1,[Cutoff Time]),23) as nvarchar) as cutoff\nfrom [Integration].[ETL Cutoff] \nwhere [Table Name] = 'Stock Item'",
+						"queryTimeout": "02:00:00",
+						"isolationLevel": "ReadUncommitted",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ETL_cutoff",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "LoadSchema",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "SetCut_off_time",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "Stockitem_dataflow",
+						"type": "DataFlowReference",
+						"parameters": {
+							"p_cut_off_time": {
+								"value": "'@{variables('cut_off_time')}'",
+								"type": "Expression"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "SetCut_off_time",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "CutoffVariable",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "cut_off_time",
+					"value": {
+						"value": "@string(activity('CutoffVariable').output.firstrow.cutoff)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"cut_off_time": {
+				"type": "String",
+				"defaultValue": "‘2000-01-01’"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-05-12T18:58:28Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

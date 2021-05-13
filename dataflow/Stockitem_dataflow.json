@@ -1,0 +1,51 @@
+{
+	"name": "Stockitem_dataflow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "StockItem",
+						"type": "DatasetReference"
+					},
+					"name": "OLTPstockitem"
+				},
+				{
+					"dataset": {
+						"referenceName": "Colors",
+						"type": "DatasetReference"
+					},
+					"name": "OLTPcolors"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Staging_StockItem",
+						"type": "DatasetReference"
+					},
+					"name": "ODSstockitem"
+				}
+			],
+			"transformations": [
+				{
+					"name": "ValidFromCutoff"
+				},
+				{
+					"name": "Join"
+				},
+				{
+					"name": "SurrogateKey"
+				},
+				{
+					"name": "Select"
+				},
+				{
+					"name": "DerivedColumn"
+				}
+			],
+			"script": "parameters{\n\tp_cut_off_time as string ('2000-01-01')\n}\nsource(output(\n\t\tStockItemID as integer,\n\t\tStockItemName as string,\n\t\tSupplierID as integer,\n\t\tColorID as integer,\n\t\tUnitPackageID as integer,\n\t\tOuterPackageID as integer,\n\t\tBrand as string,\n\t\tSize as string,\n\t\tLeadTimeDays as integer,\n\t\tQuantityPerOuter as integer,\n\t\tIsChillerStock as boolean,\n\t\tBarcode as string,\n\t\tTaxRate as decimal(18,3),\n\t\tUnitPrice as decimal(18,2),\n\t\tRecommendedRetailPrice as decimal(18,2),\n\t\tTypicalWeightPerUnit as decimal(18,3),\n\t\tMarketingComments as string,\n\t\tInternalComments as string,\n\t\tPhoto as binary,\n\t\tCustomFields as string,\n\t\tTags as string,\n\t\tSearchDetails as string,\n\t\tLastEditedBy as integer,\n\t\tValidFrom as timestamp,\n\t\tValidTo as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> OLTPstockitem\nsource(output(\n\t\tColorID as integer,\n\t\tColorName as string,\n\t\tLastEditedBy as integer,\n\t\tValidFrom as timestamp,\n\t\tValidTo as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> OLTPcolors\nOLTPstockitem filter(toDate($p_cut_off_time) <= toDate(ValidFrom)) ~> ValidFromCutoff\nValidFromCutoff, OLTPcolors join(OLTPstockitem@ColorID == OLTPcolors@ColorID,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> Join\nSelect keyGenerate(output({Stock Item Staging Key} as long),\n\tstartAt: 1L) ~> SurrogateKey\nDerivedColumn select(mapColumn(\n\t\t{WWI Stock Item ID} = StockItemID,\n\t\t{Stock Item} = StockItemName,\n\t\tColor = ColorName,\n\t\t{Selling Package} = UnitPackageID,\n\t\t{Buying Package} = OuterPackageID,\n\t\tBrand,\n\t\tSize,\n\t\t{Lead Time Days} = LeadTimeDays,\n\t\t{Quantity Per Outer} = QuantityPerOuter,\n\t\t{Is Chiller Stock} = IsChillerStock,\n\t\tBarcode,\n\t\t{Tax Rate} = TaxRate,\n\t\t{Unit Price} = UnitPrice,\n\t\t{Recommended Retail Price} = RecommendedRetailPrice,\n\t\t{Typical Weight Per Unit} = TypicalWeightPerUnit,\n\t\tPhoto,\n\t\t{Valid From} = OLTPstockitem@ValidFrom,\n\t\t{Valid To} = OLTPstockitem@ValidTo\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Select\nJoin derive(ColorID = iifNull(ColorName,'NULL'),\n\t\tUnitPackageID = toString(UnitPackageID),\n\t\tOuterPackageID = toString(OuterPackageID),\n\t\tBrand = iifNull(Brand, 'NULL'),\n\t\tSize = iifNull(Size, 'NULL')) ~> DerivedColumn\nSurrogateKey sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\t{Stock Item Staging Key},\n\t\t{WWI Stock Item ID},\n\t\t{Stock Item},\n\t\tColor,\n\t\t{Selling Package},\n\t\t{Buying Package},\n\t\tBrand,\n\t\tSize,\n\t\t{Lead Time Days},\n\t\t{Quantity Per Outer},\n\t\t{Is Chiller Stock},\n\t\tBarcode,\n\t\t{Tax Rate},\n\t\t{Unit Price},\n\t\t{Recommended Retail Price},\n\t\t{Typical Weight Per Unit},\n\t\tPhoto,\n\t\tValidFrom = {Valid From},\n\t\tValidTo = {Valid To}\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> ODSstockitem"
+		}
+	}
+}

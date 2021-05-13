@@ -1,0 +1,29 @@
+{
+	"name": "Movie_Databricks_DeltaLake",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDatabricksDeltaLake1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "movie-target"
+		},
+		"annotations": [],
+		"type": "AzureDatabricksDeltaLakeDataset",
+		"typeProperties": {
+			"database": "movie",
+			"table": "genre"
+		},
+		"schema": [
+			{
+				"name": "genreId",
+				"type": "integer"
+			},
+			{
+				"name": "genreName",
+				"type": "string"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
