@@ -1,0 +1,127 @@
+{
+	"name": "movie_metadataTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Movie OLTP",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Movie_source"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "adult",
+				"type": "nvarchar"
+			},
+			{
+				"name": "belongs_to_collection",
+				"type": "nvarchar"
+			},
+			{
+				"name": "budget",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "genres",
+				"type": "nvarchar"
+			},
+			{
+				"name": "homepage",
+				"type": "nvarchar"
+			},
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "imdb_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "original_language",
+				"type": "nvarchar"
+			},
+			{
+				"name": "original_title",
+				"type": "nvarchar"
+			},
+			{
+				"name": "overview",
+				"type": "nvarchar"
+			},
+			{
+				"name": "popularity",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "poster_path",
+				"type": "nvarchar"
+			},
+			{
+				"name": "production_companies",
+				"type": "nvarchar"
+			},
+			{
+				"name": "production_countries",
+				"type": "nvarchar"
+			},
+			{
+				"name": "release_date",
+				"type": "date"
+			},
+			{
+				"name": "revenue",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "runtime",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "spoken_languages",
+				"type": "nvarchar"
+			},
+			{
+				"name": "status",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tagline",
+				"type": "nvarchar"
+			},
+			{
+				"name": "title",
+				"type": "nvarchar"
+			},
+			{
+				"name": "video",
+				"type": "nvarchar"
+			},
+			{
+				"name": "vote_average",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "vote_count",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "movies_metadata"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

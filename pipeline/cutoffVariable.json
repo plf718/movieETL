@@ -1,0 +1,97 @@
+{
+	"name": "cutoffVariable",
+	"properties": {
+		"activities": [
+			{
+				"name": "setCutoffTime",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "cutofflookUp",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "cut_off_time",
+					"value": {
+						"value": "@string(addToTime(activity('cutofflookUp').output.firstRow.cutoff,-1,'Year'))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "cutofflookUp",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select [Cutoff Time] as cutoff\nfrom Integration.[ETL Cutoff]\nwhere [Table Name]='Stock Item'",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "source_Integration_ETL",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "cutoffDataflow",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "setCutoffTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "cutoffDataflow",
+						"type": "DataFlowReference",
+						"parameters": {
+							"cutoffParameter": {
+								"value": "'@{variables('cut_off_time')}'",
+								"type": "Expression"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"variables": {
+			"cut_off_time": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-05-12T18:04:50Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
