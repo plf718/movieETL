@@ -1,0 +1,19 @@
+{
+	"name": "target_Movie_Language_Delta",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "target_Databricks",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Target"
+		},
+		"annotations": [],
+		"type": "AzureDatabricksDeltaLakeDataset",
+		"typeProperties": {
+			"database": "movie"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

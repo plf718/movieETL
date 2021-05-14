@@ -1,0 +1,35 @@
+{
+	"name": "basicDataFlow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "source_Application_Cities",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "target_Application_Cities",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "IngestedDateTime"
+				},
+				{
+					"name": "Filter1"
+				}
+			],
+			"script": "parameters{\n\tcutoffDateTime as string\n}\nsource(output(\n\t\tCityID as integer,\n\t\tCityName as string,\n\t\tStateProvinceID as integer,\n\t\tLocation as binary,\n\t\tLatestRecordedPopulation as long,\n\t\tLastEditedBy as integer,\n\t\tValidFrom as timestamp,\n\t\tValidTo as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source1\nFilter1 derive(IngestedDateTime = currentTimestamp()) ~> IngestedDateTime\nsource1 filter(toDate($cutoffDateTime)<toDate(ValidFrom)) ~> Filter1\nIngestedDateTime sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> sink1"
+		}
+	}
+}
